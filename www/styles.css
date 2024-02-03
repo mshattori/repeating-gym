@@ -1,0 +1,96 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+#title, #track {
+    margin-bottom: 20px; /* 適宜調整してください */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 50px; /* Adjust based on your actual icon size */
+    height: 50px; /* Adjust based on your actual icon size */
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 10px;
+}
+
+/* 
+  button icons
+  Ref. https://icons8.com/icon/set/media-controls/ios
+ */
+.back {
+    background-image: url('icons/icon-back.png');
+}
+ 
+.back:active {
+    background-image: url('icons/icon-back-pressed.png');
+}
+
+.back:disabled {
+    background-image: url('icons/icon-back-disabled.png');
+}
+
+.play {
+    background-image: url('icons/icon-play.png');
+}
+
+.play:active {
+    background-image: url('icons/icon-play-pressed.png');
+}
+
+.play:disabled {
+    background-image: url('icons/icon-play-disabled.png');
+}
+
+.record {
+    background-image: url('icons/icon-record.png');
+}
+
+.record:active {
+    background-image: url('icons/icon-record-pressed.png');
+}
+
+.record:disabled {
+    background-image: url('icons/icon-record-disabled.png');
+}
+
+.next {
+    background-image: url('icons/icon-next.png');
+}
+
+.next:active {
+    background-image: url('icons/icon-next-pressed.png');
+}
+ 
+.next:disabled {
+    background-image: url('icons/icon-next-disabled.png');
+}
+
+.stop {
+    background-image: url('icons/icon-stop.png');
+}
+
+.stop:active {
+    background-image: url('icons/icon-stop-pressed.png');
+}
+ 
+.stop:disabled {
+    background-image: url('icons/icon-stop-disabled.png');
+}
