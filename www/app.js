@@ -131,7 +131,7 @@ function recordVoice() {
         recordedChunks.push(event.data);
     };
     mediaRecorder.onstop = () => {
-        recordedBlob = new Blob(recordedChunks, { type: 'audio/mp3' });
+        recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
         recordedChunks = [];
         state = STATE.AFTER_RECORD;
         playButton.click();
