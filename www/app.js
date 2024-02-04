@@ -115,10 +115,15 @@ function playAudio() {
 }
 
 function playRecord() {
-    state = STATE.PLAY_RECORD;
-    audioPlayer.src = URL.createObjectURL(recordedBlob);
-    audioPlayer.currentTime = 0;
-    audioPlayer.play();
+    console.log('Play recording')
+    try {
+        state = STATE.PLAY_RECORD;
+        audioPlayer.src = URL.createObjectURL(recordedBlob);
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+    } catch (e) {
+        console.error('Error playing recording:', e.message);
+    }
 }
 
 audioPlayer.addEventListener('ended', function () {
@@ -126,11 +131,13 @@ audioPlayer.addEventListener('ended', function () {
 });
 
 function recordVoice() {
+    console.log('Start recording')
     state = STATE.RECORD;
     mediaRecorder.ondataavailable = (event) => {
         recordedChunks.push(event.data);
     };
     mediaRecorder.onstop = () => {
+        console.log('Stop recording')
         recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
         recordedChunks = [];
         state = STATE.AFTER_RECORD;
