@@ -1,4 +1,6 @@
-
+// Ref.
+// - https://developer.mozilla.org/ja/docs/Web/API/MediaStream_Recording_API/Using_the_MediaStream_Recording_API
+// - https://github.com/mdn/dom-examples/tree/main/media/web-dictaphone
 const STATE = {
     BEFORE_PLAY_AUDIO: 0,
     PLAY_AUDIO:        1,
@@ -137,11 +139,15 @@ function recordVoice() {
         recordedChunks.push(event.data);
     };
     mediaRecorder.onstop = () => {
-        console.log('Stop recording')
-        recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+        console.log('Stopped recording')
+        console.log('MediaRecorder.state', mediaRecorder.state);
+        console.log('MediaRecorder.mimeType', mediaRecorder.mimeType);
+        recordedBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
         recordedChunks = [];
         state = STATE.AFTER_RECORD;
         playButton.click();
     };
     mediaRecorder.start();
+    console.log("Recorder started");
+    console.log('MediaRecorder.state', mediaRecorder.state);
 }
