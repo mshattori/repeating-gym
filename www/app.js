@@ -1,15 +1,8 @@
 // Ref.
 // - https://developer.mozilla.org/ja/docs/Web/API/MediaStream_Recording_API/Using_the_MediaStream_Recording_API
 // - https://github.com/mdn/dom-examples/tree/main/media/web-dictaphone
-const STATE = {
-    BEFORE_PLAY_AUDIO: 0,
-    PLAY_AUDIO:        1,
-    BEFORE_RECORD:     2,
-    RECORD:            3,
-    AFTER_RECORD:      4,
-    PLAY_RECORD:       5,
-}
-let state = STATE.BEFORE_PLAY_AUDIO;
+let isPlaying = false;
+let isRecording = false;
 let playlist = [];
 let currentTrackIndex = 0;
 let audioPlayer = document.getElementById('audioPlayer');
@@ -20,6 +13,7 @@ let nextButton = document.getElementById('next');
 let mediaRecorder;
 let recordedChunks = [];
 let recordedBlob;
+let recordedAudio;
 
 document.addEventListener('DOMContentLoaded', () => {
     filename = new URL(document.location).searchParams.get('file');
@@ -41,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initializeState() {
     document.getElementById('track').textContent = playlist[currentTrackIndex]
-    state = STATE.BEFORE_PLAY_AUDIO;
+    isPlaying = false;
+    isRecording = false;
     audioPlayer.src = '';
     audioPlayer.pause();
     if (playButton.classList.contains('stop')) {
@@ -52,49 +47,43 @@ function initializeState() {
         recordButton.classList.remove('stop');
         recordButton.classList.add('play');
     }
-    recordButton.disabled = true; // disable record button at first
+    if (recordedAudio) {
+        recordedAudio.pause();
+        recordedAudio.remove();
+    }
 }
 
 playButton.addEventListener('click', function() {
     this.classList.toggle('play');
     this.classList.toggle('stop');
-    // this.style.backgroundImage = this.classList.contains('stop') ? "url('icons/icon-stop.png')" : "url('icons/icon-play.png')";
-    if (state === STATE.BEFORE_PLAY_AUDIO || state === STATE.BEFORE_RECORD) {
+    if (!isPlaying) {
+        isPlaying = true;
         recordButton.disabled = true;
         playAudio();
-    } else if (state === STATE.PLAY_AUDIO) {
-        audioPlayer.pause();
-        state = STATE.BEFORE_RECORD;
-        recordButton.disabled = false; // enable record button after playing
-    } else if (state === STATE.AFTER_RECORD) {
-        recordButton.disabled = true;
-        playRecord();
-    } else if (state === STATE.PLAY_RECORD) {
-        state = STATE.AFTER_RECORD;
+    } else {
+        isPlaying = false;
         recordButton.disabled = false;
+        audioPlayer.pause();
     }
 });
  
 recordButton.addEventListener('click', function() {
     this.classList.toggle('record');
     this.classList.toggle('stop');
-    // this.style.backgroundImage = this.classList.contains('stop') ? "url('icons/icon-stop.png')" : "url('icons/icon-record.png')";
-    if (state === STATE.BEFORE_RECORD || state === STATE.AFTER_RECORD) {
+    if (!isRecording) {
+        isRecording = true;
         playButton.disabled = true;
         recordVoice();
-    } else if (state === STATE.RECORD) {
-        playButton.disabled = false;
+    } else {
+        isRecording = false;
+        playButton.enabled = true;
         mediaRecorder.stop();
     }
 });
 
 backButton.addEventListener('click', function() {
-    // Go back to the previous audio if it's before recording.
-    // If it's after recording, just repeat the current audio.
-    if (state < STATE.RECORD) {
-        if (currentTrackIndex > 0) {
-            currentTrackIndex--;
-        }
+    if (currentTrackIndex > 0) {
+        currentTrackIndex--;
     }
     initializeState();
     playButton.click();
@@ -109,7 +98,6 @@ nextButton.addEventListener('click', function() {
 });
 
 function playAudio() {
-    state = STATE.PLAY_AUDIO;
     audioPlayer.src = playlist[currentTrackIndex];
     audioPlayer.currentTime = 0;
     audioPlayer.play();
@@ -120,22 +108,25 @@ audioPlayer.addEventListener('ended', function () {
     playButton.click();
 });
 
-function playRecord() {
-    console.log('Play recording')
+function createRecordedAudio() {
     try {
-        state = STATE.PLAY_RECORD;
+        // state = STATE.PLAY_RECORD;
         // It's needed to create a new audio element everytime to play the blob in iOS.
-        body = document.getElementsByTagName('body')[0];
-        audio = document.createElement("audio");
-        // audio.controls = true;
-        audio.src = URL.createObjectURL(recordedBlob);
-        audio.addEventListener('ended', function () {
-            console.log('Play record ended')
-            audio.remove(); // remove the audio element
-            playButton.click(); // update the state and the button
+        recordedAudio = document.createElement("audio");
+        document.getElementsByTagName('body')[0].appendChild(recordedAudio);
+        recordedAudio.controls = true;
+        recordedAudio.src = URL.createObjectURL(recordedBlob);
+        recordedAudio.addEventListener('play', function () {
+            console.log('Play recording')
+            playButton.disabled = true;
+            recordButton.disabled = true;
         });
-        body.appendChild(audio);
-        audio.play();
+        recordedAudio.addEventListener('ended', function () {
+            console.log('Play recording ended')
+            playButton.disabled = false;
+            recordButton.disabled = false;
+        });
+        recordedAudio.play();
     } catch (e) {
         console.error('Error playing recording:', e.message);
     }
@@ -143,7 +134,9 @@ function playRecord() {
 
 function recordVoice() {
     console.log('Start recording')
-    state = STATE.RECORD;
+    if (recordedAudio) {
+        recordedAudio.remove();
+    }
     mediaRecorder.ondataavailable = (event) => {
         recordedChunks.push(event.data);
     };
@@ -153,8 +146,7 @@ function recordVoice() {
         console.log('MediaRecorder.mimeType', mediaRecorder.mimeType);
         recordedBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
         recordedChunks = [];
-        state = STATE.AFTER_RECORD;
-        playButton.click();
+        createRecordedAudio();
     };
     mediaRecorder.start();
     console.log("Recorder started");
