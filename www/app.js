@@ -127,15 +127,15 @@ function playRecord() {
         // It's needed to create a new audio element everytime to play the blob in iOS.
         body = document.getElementsByTagName('body')[0];
         audio = document.createElement("audio");
-        audio.controls = true;
+        // audio.controls = true;
         audio.src = URL.createObjectURL(recordedBlob);
         audio.addEventListener('ended', function () {
             console.log('Play record ended')
-            // audio.remove(); // remove the audio element
-            // playButton.click(); // update the state and the button
+            audio.remove(); // remove the audio element
+            playButton.click(); // update the state and the button
         });
         body.appendChild(audio);
-        // audio.play();
+        audio.play();
     } catch (e) {
         console.error('Error playing recording:', e.message);
     }
