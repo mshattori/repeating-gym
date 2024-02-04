@@ -70,7 +70,6 @@ playButton.addEventListener('click', function() {
         recordButton.disabled = true;
         playRecord();
     } else if (state === STATE.PLAY_RECORD) {
-        audioPlayer.pause();
         state = STATE.AFTER_RECORD;
         recordButton.disabled = false;
     }
@@ -116,21 +115,28 @@ function playAudio() {
     audioPlayer.play();
 }
 
+audioPlayer.addEventListener('ended', function () {
+    console.log('Play audio ended')
+    playButton.click();
+});
+
 function playRecord() {
     console.log('Play recording')
     try {
         state = STATE.PLAY_RECORD;
-        audioPlayer.src = URL.createObjectURL(recordedBlob);
-        audioPlayer.currentTime = 0;
-        audioPlayer.play();
+        // It's needed to create a new audio element everytime to play the blob in iOS.
+        audio = document.createElement("audio");
+        audio.src = URL.createObjectURL(recordedBlob);
+        audio.addEventListener('ended', function () {
+            console.log('Play record ended')
+            audio.remove(); // remove the audio element
+            playButton.click(); // update the state and the button
+        });
+        audio.play();
     } catch (e) {
         console.error('Error playing recording:', e.message);
     }
 }
-
-audioPlayer.addEventListener('ended', function () {
-    playButton.click();
-});
 
 function recordVoice() {
     console.log('Start recording')
