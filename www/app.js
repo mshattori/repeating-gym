@@ -1,7 +1,7 @@
 
 const STATE = {
     BEFORE_PLAY_AUDIO: 0,
-    PLAY_AUDID:        1,
+    PLAY_AUDIO:        1,
     BEFORE_RECORD:     2,
     RECORD:            3,
     AFTER_RECORD:      4,
@@ -60,7 +60,7 @@ playButton.addEventListener('click', function() {
     if (state === STATE.BEFORE_PLAY_AUDIO || state === STATE.BEFORE_RECORD) {
         recordButton.disabled = true;
         playAudio();
-    } else if (state === STATE.PLAY_AUDID) {
+    } else if (state === STATE.PLAY_AUDIO) {
         audioPlayer.pause();
         state = STATE.BEFORE_RECORD;
         recordButton.disabled = false; // enable record button after playing
@@ -108,7 +108,7 @@ nextButton.addEventListener('click', function() {
 });
 
 function playAudio() {
-    state = STATE.PLAY_AUDID;
+    state = STATE.PLAY_AUDIO;
     audioPlayer.src = playlist[currentTrackIndex];
     audioPlayer.currentTime = 0;
     audioPlayer.play();
