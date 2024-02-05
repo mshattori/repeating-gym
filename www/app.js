@@ -11,6 +11,7 @@ let recordButton = document.getElementById('record');
 let backButton = document.getElementById('back');
 let nextButton = document.getElementById('next');
 let mediaRecorder;
+let recordedBlob;
 let recordedAudio;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -134,9 +135,19 @@ const soundClips = document.querySelector(".sound-clips");
 
 function createRecordedAudio(chunks) {
     const clipContainer = document.createElement("article");
+    const clipLabel = document.createElement("p");
     const audio = document.createElement("audio");
+    const deleteButton = document.createElement("button");
+
     audio.setAttribute("controls", "");
+    deleteButton.textContent = "Delete";
+    deleteButton.className = "delete";
+
+    clipLabel.textContent = "My unnamed clip";
+
     clipContainer.appendChild(audio);
+    clipContainer.appendChild(clipLabel);
+    clipContainer.appendChild(deleteButton);
     soundClips.appendChild(clipContainer);
 
     audio.controls = true;
@@ -144,11 +155,16 @@ function createRecordedAudio(chunks) {
     chunks = [];
     const audioURL = window.URL.createObjectURL(blob);
     audio.src = audioURL;
+    console.log("recorder stopped");
+
+    deleteButton.onclick = function (e) {
+      e.target.closest(".clip").remove();
+    };
 }
 
 function recordVoice() {
     console.log('Start recording')
-    chunks = [];
+    let chunks = [];
     if (recordedAudio) {
         recordedAudio.remove();
     }
