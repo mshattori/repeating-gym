@@ -134,13 +134,11 @@ const soundClips = document.querySelector(".sound-clips");
 // }
 
 function createRecordedAudio(chunks) {
+    let test = prompt('Hello');
     const clipContainer = document.createElement("article");
     const clipLabel = document.createElement("p");
     const audio = document.createElement("audio");
     const deleteButton = document.createElement("button");
-
-    audio.setAttribute("controls", "");
-    deleteButton.textContent = "Delete";
     deleteButton.className = "delete";
 
     clipLabel.textContent = "My unnamed clip";
@@ -164,6 +162,7 @@ function createRecordedAudio(chunks) {
 
 function recordVoice() {
     console.log('Start recording')
+    console.log('MediaRecorder.state', mediaRecorder.state);
     let chunks = [];
     if (recordedAudio) {
         recordedAudio.remove();
