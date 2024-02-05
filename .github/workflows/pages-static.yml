@@ -9,6 +9,11 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Target branch' # Description of the input
+        required: true               # Make the input required
+        default: 'main' 
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -32,6 +37,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          # Fallback to github.ref when github.event.inputs.branch is not set
+          ref: ${{ github.event.inputs.branch || github.ref }}
       - name: Show Files
         run: find www
       - name: Setup Pages
