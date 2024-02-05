@@ -134,7 +134,9 @@ const soundClips = document.querySelector(".sound-clips");
 
 function createRecordedAudio(chunks) {
     recordedAudio = document.createElement("audio");
-    soundClips.appendChild(recordedAudio);
+    recordedAudio.addEventListener('error', function (e) {
+        console.error('audio element error:', e.message);
+    });
     recordedAudio.controls = true;
     const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
     chunks = [];
