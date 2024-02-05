@@ -108,28 +108,59 @@ audioPlayer.addEventListener('ended', function () {
     playButton.click();
 });
 
-function createRecordedAudio() {
-    try {
-        // state = STATE.PLAY_RECORD;
-        // It's needed to create a new audio element everytime to play the blob in iOS.
-        recordedAudio = document.createElement("audio");
-        document.getElementsByTagName('body')[0].appendChild(recordedAudio);
-        recordedAudio.controls = true;
-        recordedAudio.src = URL.createObjectURL(recordedBlob);
-        recordedAudio.addEventListener('play', function () {
-            console.log('Play recording')
-            playButton.disabled = true;
-            recordButton.disabled = true;
-        });
-        recordedAudio.addEventListener('ended', function () {
-            console.log('Play recording ended')
-            playButton.disabled = false;
-            recordButton.disabled = false;
-        });
-        recordedAudio.play();
-    } catch (e) {
-        console.error('Error playing recording:', e.message);
-    }
+const soundClips = document.querySelector(".sound-clips");
+
+// function createRecordedAudio() {
+//     try {
+//         // state = STATE.PLAY_RECORD;
+//         // It's needed to create a new audio element everytime to play the blob in iOS.
+//         recordedAudio = document.createElement("audio");
+//         document.getElementsByTagName('body')[0].appendChild(recordedAudio);
+//         recordedAudio.controls = true;
+//         recordedAudio.src = URL.createObjectURL(recordedBlob);
+//         recordedAudio.addEventListener('play', function () {
+//             console.log('Play recording')
+//             playButton.disabled = true;
+//             recordButton.disabled = true;
+//         });
+//         recordedAudio.addEventListener('ended', function () {
+//             console.log('Play recording ended')
+//             playButton.disabled = false;
+//             recordButton.disabled = false;
+//         });
+//         recordedAudio.play();
+//     } catch (e) {
+//         console.error('Error playing recording:', e.message);
+//     }
+// }
+
+function createRecordedAudio(chunks) {
+    const clipContainer = document.createElement("article");
+    const clipLabel = document.createElement("p");
+    const audio = document.createElement("audio");
+    const deleteButton = document.createElement("button");
+
+    audio.setAttribute("controls", "");
+    deleteButton.textContent = "Delete";
+    deleteButton.className = "delete";
+
+    clipLabel.textContent = "My unnamed clip";
+
+    clipContainer.appendChild(audio);
+    clipContainer.appendChild(clipLabel);
+    clipContainer.appendChild(deleteButton);
+    soundClips.appendChild(clipContainer);
+
+    audio.controls = true;
+    const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+    chunks = [];
+    const audioURL = window.URL.createObjectURL(blob);
+    audio.src = audioURL;
+    console.log("recorder stopped");
+
+    deleteButton.onclick = function (e) {
+      e.target.closest(".clip").remove();
+    };
 }
 
 function recordVoice() {
@@ -141,12 +172,13 @@ function recordVoice() {
         recordedChunks.push(event.data);
     };
     mediaRecorder.onstop = () => {
-        console.log('Stopped recording')
-        console.log('MediaRecorder.state', mediaRecorder.state);
-        console.log('MediaRecorder.mimeType', mediaRecorder.mimeType);
-        recordedBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
-        recordedChunks = [];
-        createRecordedAudio();
+        // console.log('Stopped recording')
+        // console.log('MediaRecorder.state', mediaRecorder.state);
+        // console.log('MediaRecorder.mimeType', mediaRecorder.mimeType);
+        // recordedBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
+        // recordedChunks = [];
+        // createRecordedAudio();
+        createRecordedAudio(recordedChunks);
     };
     mediaRecorder.start();
     console.log("Recorder started");
