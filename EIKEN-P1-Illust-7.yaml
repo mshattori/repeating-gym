@@ -1,18 +1,11 @@
 Picture-1: One day, a man was watching a TV program.
-Sample-1:
-  - One day, a man was watching a TV program.
-  - The program was about endangered wild animals in the savanna such as African elephants.
-  - It said that illegal hunting caused the decline in the number of wild animals.
-  - The man looked concerned about the animals. A few days later,
-  - the man found eco-tours that a travel agency was offering on the Internet.
-  - The website said that people could help save animals by going on such tours,
-  - so he decided to sign up for one. Two months later, the man was taking part in the tour.
-  - The man and many participants were on a bus in the savanna.
-  - They were looking over the side and watching African elephants.
-  - The bus was very crowded with people, and there were other buses nearby.
-  - A few weeks later, the man was watching the news on TV.
-  - He saw that there had been a collision between buses that were taking people on eco-tours.
-  - The newscaster said there were too many eco-tours in the area.
+Sample-1@: One day, a man was watching a TV program. The program was about endangered wild animals in the savanna such as African elephants. It said that illegal hunting caused the decline in the number of wild animals. The man looked concerned about the animals. A few days later, the man found eco-tours that a travel agency was offering on the Internet. The website said that people could help save animals by going on such tours, so he decided to sign up for one. Two months later, the man was taking part in the tour. The man and many participants were on a bus in the savanna. They were looking over the side and watching African elephants. The bus was very crowded with people, and there were other buses nearby. A few weeks later, the man was watching the news on TV. He saw that there had been a collision between buses that were taking people on eco-tours. The newscaster said there were too many eco-tours in the area.
 Question: Please look at the fourth picture. If you were the man, what would you be thinking?
-Sample-Answer-1: Most of all, I'd be hoping that no one got injured. However, I'd also be thinking that, since the tours might now be canceled, I was lucky to have the opportunity to go there before the accident.
-Sample-Answer-2: I'd be thinking that it must have been wrong of the eco-tour companies to conduct the tours without paying enough attention to safety. I'd consider it carefully before going on such a tour again.
+Answer-1@: Most of all, I'd be hoping that no one got injured. However, I'd also be thinking that, since the tours might now be canceled, I was lucky to have the opportunity to go there before the accident.
+Answer-2@: I'd be thinking that it must have been wrong of the eco-tour companies to conduct the tours without paying enough attention to safety. I'd consider it carefully before going on such a tour again.
+
+Picture-2: One day, a junior high school teacher went to a teaching seminar.
+Sample-2@: One day, a junior high school teacher went to a teaching seminar. The speaker there was making a presentation about how students can learn things by actually doing them. The teacher thought that this was a good idea. The next week, at a teachers' meeting, he and the other teachers were talking about whether the students should go on a school trip to a nature park or a planetarium. They decided to take the students to a planetarium. The following month, the teacher and his students were enjoying an activity where they could experience stargazing. The teacher was happy that his students were enjoying themselves while they learned. Thirty minutes later, one student was looking at a big telescope display and trying to touch it, and other students were talking in high spirits. A planetarium employee told the teacher that his students were behaving badly. 
+Question: Please look at the fourth picture. If you were the teacher, what would you be thinking?
+Answer-1@: Most of all, I'd be feeling sorry for the planetarium employee that my students were behaving badly. However, I'd be thinking that taking them to the planetarium was a good idea because they can learn how they should behave in public places from this experience.
+Answer-2@: I'd be thinking that maybe I shouldn't have been so eager to try learning by doing with my students. Students sometimes behave badly in public places, and this can disturb visitors.
