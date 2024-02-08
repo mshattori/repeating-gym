@@ -121,6 +121,11 @@ function createRecordedAudio() {
             playButton.disabled = true;
             recordButton.disabled = true;
         });
+        recordedAudio.addEventListener('pause', function () {
+            console.log('Pause recording')
+            playButton.disabled = false;
+            recordButton.disabled = false;
+        });
         recordedAudio.addEventListener('ended', function () {
             console.log('Play recording ended')
             playButton.disabled = false;
