@@ -43,7 +43,7 @@ if __name__ == "__main__":
         with open(args.input_file, "r") as f:
             content = yaml.safe_load(f)
     except Exception as e:
-        print(f'Error: {type(e).__qualname__}: {e}', file=sys.stderr)
+        print(f'Error: {type(e).__name__}: {e}', file=sys.stderr)
         sys.exit(1)
     content = _split_text(content)
     print('------------------------------')
@@ -61,6 +61,7 @@ if __name__ == "__main__":
     polly = SimplePolly(lang='en-US', speaker=SPEAKER)
 
     output_filenames = []
+    speed = '80%'
 
     for title, value in content.items():
         output_filename = title.replace(' ', '-') + '.mp3'
@@ -68,11 +69,10 @@ if __name__ == "__main__":
         if isinstance(value, list):
             for i, v in enumerate(value):
                 filename = os.path.splitext(output_filename)[0] + f'-{i+1}.mp3'
-                polly.make_audio_file(v, filename)
-                # speed_change_file(filename, 0.8)  # slow down
+                polly.make_audio_file(v, filename, speed)
                 output_filenames.append(filename)
         else:
-            polly.make_audio_file(value, output_filename)
+            polly.make_audio_file(value, output_filename, speed)
             output_filenames.append(output_filename)
 
     stem_name = os.path.basename(os.path.splitext(args.input_file)[0])
