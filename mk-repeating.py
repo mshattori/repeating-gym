@@ -39,8 +39,12 @@ if __name__ == "__main__":
     parser.add_argument("input_file", help="input file")
     args = parser.parse_args()
 
-    with open(args.input_file, "r") as f:
-        content = yaml.safe_load(f)
+    try:
+        with open(args.input_file, "r") as f:
+            content = yaml.safe_load(f)
+    except Exception as e:
+        print(f'Error: {e}', file=sys.stderr)
+        sys.exit(1)
     content = _split_text(content)
     print('------------------------------')
     for title, value in content.items():
