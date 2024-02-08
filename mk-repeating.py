@@ -43,7 +43,7 @@ if __name__ == "__main__":
         with open(args.input_file, "r") as f:
             content = yaml.safe_load(f)
     except Exception as e:
-        print(f'Error: {e}', file=sys.stderr)
+        print(f'Error: {type(e).__qualname__}: {e}', file=sys.stderr)
         sys.exit(1)
     content = _split_text(content)
     print('------------------------------')
