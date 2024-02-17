@@ -10,6 +10,9 @@ let playButton = document.getElementById('play');
 let recordButton = document.getElementById('record');
 let backButton = document.getElementById('back');
 let nextButton = document.getElementById('next');
+let timerDisplay = document.getElementById('timer');
+let timerId;
+let timerSeconds = 0;
 let mediaRecorder;
 let recordedChunks = [];
 let recordedBlob;
@@ -53,6 +56,8 @@ function initializeState() {
         recordedAudio.pause();
         recordedAudio.remove();
     }
+    stopTimer();
+    timerDisplay.textContent = "";
 }
 
 playButton.addEventListener('click', function() {
@@ -151,11 +156,35 @@ function recordVoice() {
         console.log('Stopped recording')
         console.log('MediaRecorder.state', mediaRecorder.state);
         console.log('MediaRecorder.mimeType', mediaRecorder.mimeType);
+        stopTimer();
         recordedBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
         recordedChunks = [];
         createRecordedAudio();
     };
     mediaRecorder.start();
+    startTimer();
     console.log("Recorder started");
     console.log('MediaRecorder.state', mediaRecorder.state);
+}
+
+function updateTimer() {
+    let minutes = Math.floor(timerSeconds / 60);
+    let remainingSeconds = timerSeconds % 60;
+
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    remainingSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
+
+    timerDisplay.textContent = minutes + ":" + remainingSeconds;
+
+    timerSeconds++;
+}
+
+function startTimer() {
+    timerSeconds = 0;
+    updateTimer();
+    timerId = setInterval(updateTimer, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerId);
 }
