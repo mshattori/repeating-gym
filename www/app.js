@@ -43,10 +43,12 @@ function initializeState() {
         playButton.classList.remove('stop');
         playButton.classList.add('play');
     }
+    playButton.disabled = false;
     if (recordButton.classList.contains('stop')) {
         recordButton.classList.remove('stop');
-        recordButton.classList.add('play');
+        recordButton.classList.add('record');
     }
+    recordButton.disabled = false;
     if (recordedAudio) {
         recordedAudio.pause();
         recordedAudio.remove();
